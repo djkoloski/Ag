@@ -1,0 +1,313 @@
+Pointer:
+	A generic pointer to anything.
+	Use it like a pointer. (except dereferencing. don't do those)
+	To cast it to a specific pointer type, call .cast<TYPE *>().
+
+Window:
+	int state:
+		Either Window::OPEN or Window::CLOSED depending on the state.
+	Ag::Pointer callback:
+		The callback function.
+	Ag::Pointer callData:
+		The callback function data.
+	
+	Window():
+		Constructs a window. Does not open a window.
+	~Window():
+		Destructs a window. Will close the window if appropriate.
+	const bool open(
+		unsigned int width,
+		unsigned int height,
+		const std::string &title
+		):
+	const bool open(
+		unsigned int width,
+		unsigned int height,
+		const std::string &title,
+		unsigned int flags
+		):
+	const bool open(
+		unsigned int xpos,
+		unsigned int ypos,
+		unsigned int width,
+		unsigned int height,
+		const std::string &title
+		):
+	const bool open(
+		unsigned int xpos,
+		unsigned int ypos,
+		unsigned int width,
+		unsigned int height,
+		const std::string &title,
+		unsigned int flags
+		):
+	const bool open(
+		unsigned int width,
+		unsigned int height,
+		unsigned char colorR,
+		unsigned char colorG,
+		unsigned char colorB,
+		unsigned char colorA,
+		unsigned char accumR,
+		unsigned char accumG,
+		unsigned char accumB,
+		unsigned char accumA,
+		unsigned char depth,
+		unsigned char stencil,
+		const std::string &title
+		):
+	const bool open(
+		unsigned int width,
+		unsigned int height,
+		unsigned char colorR,
+		unsigned char colorG,
+		unsigned char colorB,
+		unsigned char colorA,
+		unsigned char accumR,
+		unsigned char accumG,
+		unsigned char accumB,
+		unsigned char accumA,
+		unsigned char depth,
+		unsigned char stencil,
+		const std::string &title,
+		unsigned int flags
+		):
+
+	const bool open(
+		unsigned int xpos,
+		unsigned int ypos,
+		unsigned int width,
+		unsigned int height,
+		unsigned char colorR,
+		unsigned char colorG,
+		unsigned char colorB,
+		unsigned char colorA,
+		unsigned char accumR,
+		unsigned char accumG,
+		unsigned char accumB,
+		unsigned char accumA,
+		unsigned char depth,
+		unsigned char stencil,
+		const std::string &title
+		):
+
+	const bool open(
+		unsigned int xpos,
+		unsigned int ypos,
+		unsigned int width,
+		unsigned int height,
+		unsigned char colorR,
+		unsigned char colorG,
+		unsigned char colorB,
+		unsigned char colorA,
+		unsigned char accumR,
+		unsigned char accumG,
+		unsigned char accumB,
+		unsigned char accumA,
+		unsigned char depth,
+		unsigned char stencil,
+		const std::string &title,
+		unsigned int flags
+		):
+		Opens a window according to the passed specifications.
+		Returns whether the window was successfully created.
+		
+		xpos / ypos: x and y position of the window relative to the upper left hand corner.
+			0 and 0 is default.
+		width / height: width and height of the window
+		colorR / colorG / colorB / colorA: number of red, green, blue, and alpha bits given to each channel in the color buffer.
+			You'll probably want true color: 8 for each (the default)
+		accumR / accumG / accumB / accumA: number of red, green, blue, and alpha bits given to each channel in the accumulation buffer.
+			You'll probably want true color: 8 for each (the default)
+		depth: the number of bits given to the depth channel in the depth buffer.
+			You'll probably want 24 or more. Some windowing systems do not support 32-bit depth buffers!
+			24 is the default.
+		stencil: the number of bits given the stencil channel in the stencil buffer.
+			Most people don't use the stencil buffer.
+			0 is the default.
+		title: the title of the window.
+		flags: the window properties you would like the window to respect as best as possible. Binary OR ( | ) the ones you want together.
+			Window::RESIZE: whether or not the window can resize. This allows the window to crudely maximize.
+			Window::MINIMIZE: whether or not the window can minimize.
+			Window::MAXIMIZE: whether or not the window can natively maximize. (it gets a button)
+	
+	const bool close():
+		Closes the window.
+		Returns whether the window was successfully closed.
+	
+	const bool activate():
+		Activates the window's render context, allowing GL calls to draw to the window.
+		Returns whether the window was successfully activated.
+	
+	const bool minimize():
+		Minimizes the window.
+		Returns whether the window was successfully minimized.
+	
+	const bool maximize():
+		Maximizes the window.
+		Returns whether the window was successfully maximized.
+	
+	const bool restore():
+		Restores the window from maximization.
+		Returns whether the window was successfully restored.
+	
+	const bool swap():
+		Swaps the window's context's buffer.
+		Returns whether the window was successfully swapped.
+	
+	const bool poll():
+		Polls for that window's events.
+		Returns whether the window was successfully polled.
+	
+	const bool setTitle(
+		const std::string &title
+		):
+		Sets the window's title to title.
+		Returns whether the window title was successfully changed.
+	
+	const bool setSize(
+		unsigned int width,
+		unsigned int height
+		):
+		Sets the window's size to width by height.
+		Returns whether the window was successfully resized.
+	
+	const bool setPos(
+		unsigned int xpos,
+		unsigned int ypos
+		):
+		Repositions the window.
+		Returns whether the window was successfully repositioned.
+	
+	const bool setCallback(
+		const bool (*)(const Event &)
+		):
+		Sets the callback function for the window.
+		Returns whether the callback was successfully changed.
+	
+	const bool setCallback(
+		const bool (*)(const Event &, const Pointer &),
+		const Pointer &data
+		):
+		Sets the callback function for the window with extra user data.
+		Pointer may be ANY pointer type. (even function pointers!)
+		Returns whether the callback was successfully changed.
+	
+	const bool setCallData(
+		const Pointer &data
+		):
+		Sets the callback data for the callback function.
+		DO NOT SET CALLBACK DATA WITH A CALLBACK FUNCTION THAT IS NOT MEANT TO TAKE CALLBACK DATA!
+		Returns whether the callback data was successfully changed.
+	
+	const bool getTitle(
+		std::string &title
+		):
+		Gets the title of the window and places it into title.
+		Returns whether the retrieval was successful.
+	
+	const bool getSize(
+		unsigned int &width,
+		unsigned int &height
+		):
+		Gets the size of the window and places it into width and height.
+		Returns whether the retrieval was successful.
+	
+	const bool getPos(
+		unsigned int &xpos,
+		unsigned int &ypos
+		):
+		Gets the position of the window and places it into xpos and ypos.
+		Returns whether the retrieval was successful.
+
+Callback Functions:
+	Callback functions may take two forms:
+		const bool callback(const Ag::Window::Event &)
+		or
+		const bool callback(const Ag::Window::Event &, const Ag::Pointer &)
+		
+		The only difference is that the second receives user-specified data when called.
+		
+		If the event is handled by the callback function, return true. Otherwise, return false.
+
+Window::Event:
+	Ag::Window *win:
+		A pointer to the window receiving the input.
+	int args[4]:
+		Four argument integers that may or may not be filled.
+	unsigned int id:
+		The type of the event triggered. One of:
+			Ag::Window::Event::UNDEFINED:
+				An undefined event. Feel free to discard.
+			Ag::Window::Event::OPEN:
+				Called when the window is opened.
+			Ag::Window::Event::CLOSE:
+				Called when the window has a request to close.
+			Ag::Window::Event::MOVE:
+				The window has been moved.
+				args[0] is the new x position.
+				args[1] is the new y position.
+			Ag::Window::Event::RESIZE:
+				The window has been resized.
+				args[0] is the new width.
+				args[1] is the new height.
+			Ag::Window::Event::MOUSEDOWN:
+			Ag::Window::Event::MOUSEUP:
+				A mouse button has been held down or let up.
+				args[0] is one of:
+					Ag::Key::MOUSELEFT: the left mouse button
+					Ag::Key::MOUSEMIDDLE: the middle mouse button
+					Ag::Key::MOUSERIGHT: the right mouse button
+				args[1] is the x position of the click.
+				args[2] is the y position of the click.
+			Ag::Window::Event::KEYDOWN:
+			Ag::Window::Event::KEYUP:
+				A keyboard key has been held down or let up.
+				args[0] is one of:
+					Ag::Key::SHIFT:
+					Ag::Key::CONTROL:
+					Ag::Key::ALT:
+						args[1] is 0 if the cause is the left key, 1 if the right key.
+					Ag::Key::CAPSLOCK:
+					Ag::Key::NUMPAD:
+					Ag::Key::BACKSPACE:
+					Ag::Key::TAB:
+					Ag::Key::CLEAR:
+					Ag::Key::ENTER:
+					Ag::Key::PAUSE:
+					Ag::Key::ESCAPE:
+					Ag::Key::PAGEUP:
+					Ag::Key::PAGEDOWN:
+					Ag::Key::END:
+					Ag::Key::HOME:
+					Ag::Key::LEFT:
+					Ag::Key::UP:
+					Ag::Key::RIGHT:
+					Ag::Key::DOWN:
+					Ag::Key::INSERT:
+					Ag::Key::DELETE:
+					Ag::Key::NUMLOCK:
+					Ag::Key::SCROLLLOCK:
+						Nothing special.
+					Ag::Key::CHAR:
+						args[1] is the ASCII character code of the key (if a letter, uppercase).
+					Ag::Key::FUNCTION:
+						args[1] is the number of the function key (starting with 1)
+			Ag::Window::Event::MOUSEMOVE:
+				The mouse has been moved.
+				args[0] is the new x position.
+				args[1] is the new y position.
+			Ag::Window::Event::MOUSEWHEEL:
+				The mouse wheel has been scrolled.
+				args[0] is 1 if the wheel has been scrolled up, and -1 if down.
+			Ag::Window::Event::GAINFOCUS:
+				The window has gained focus.
+			Ag::Window::Event::LOSEFOCUS:
+				The window has lost focus.
+			
+			If the event is not UNDEFINED, OPEN, CLOSE, MOVE, or RESIZE, args[3] is the binary OR of the following:
+				Ag::Key::SHIFT: The shift key is held down
+				Ag::Key::CONTROL: The control key is held down
+				Ag::Key::ALT: The alt key is held down
+				Ag::Key::CAPSLOCK: Caps lock is on (this turns on the shift bit)
+				Ag::Key::NUMPAD: The key pressed was a numpad key
